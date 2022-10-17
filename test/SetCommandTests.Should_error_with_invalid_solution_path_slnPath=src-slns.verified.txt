@@ -1,0 +1,8 @@
+﻿{
+  IsErrorRedirected: false,
+  IsInputRedirected: false,
+  IsOutputRedirected: false,
+  Out:
+More than 1 .sln found in '{SolutionDirectory}integration\src/slns'
+
+}

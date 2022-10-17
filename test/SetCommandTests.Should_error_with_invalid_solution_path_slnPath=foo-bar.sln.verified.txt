@@ -1,0 +1,9 @@
+﻿{
+  IsErrorRedirected: false,
+  IsInputRedirected: false,
+  IsOutputRedirected: false,
+  Out:
+Checking for projects in {SolutionDirectory}integration\foo/bar.sln
+Solution file doesn't exist
+
+}
