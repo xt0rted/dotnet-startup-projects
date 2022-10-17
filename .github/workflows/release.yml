@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  release:
+   types: [published]
+
+env:
+  DOTNET_NOLOGO: true
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Get version from tag
+        id: tag_name
+        run: echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+
+      - name: Check out repository
+        uses: actions/checkout@v3.1.0
+
+      - name: Set up .NET
+        uses: xt0rted/setup-dotnet@v1.4.0
+        with:
+          source-url: https://nuget.pkg.github.com/xt0rted/index.json
+          nuget_auth_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changelog entry
+        uses: mindsers/changelog-reader-action@v2.2.0
+        id: changelog_reader
+        with:
+          version: ${{ steps.tag_name.outputs.current_version }}
+
+      - run: dotnet tool restore
+
+      - run: dotnet r build
+
+      - run: dotnet r test -- --no-build --logger GitHubActions
+
+      - run: dotnet r pack
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: nupkg
+          path: ./artifacts/*.nupkg
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        id: release_updater
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          files: ./artifacts/*.nupkg
+
+      - name: Create discussion for release
+        run: |
+          gh api \
+            --method PATCH \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/releases/${{ steps.release_updater.outputs.id }} \
+            -f discussion_category_name='Announcements'
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Publish to GPR
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }}
+
+      - name: Publish to nuget.org
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key ${{ secrets.NUGET_TOKEN }} \
+            --source https://api.nuget.org/v3/index.json

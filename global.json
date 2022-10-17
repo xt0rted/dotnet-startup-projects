@@ -1,0 +1,16 @@
+{
+  "sdk": {
+    "version": "6.0.402"
+  },
+  "scripts": {
+    "clean": "dotnet rimraf artifacts",
+    "clean:bin": "dotnet rimraf src/**/bin src/**/obj test/**/bin test/**/obj",
+    "clean:test": "dotnet rimraf integration/.vs integration/**/bin integration/**/obj",
+    "build": "dotnet build",
+    "test": "dotnet test",
+    "test:31": "dotnet test --framework netcoreapp3.1",
+    "test:6": "dotnet test --framework net6.0",
+    "prepack": "dotnet r clean",
+    "pack": "dotnet pack --no-build --output ./artifacts"
+  }
+}

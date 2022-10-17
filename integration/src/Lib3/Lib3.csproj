@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib1\Lib1.csproj" />
+    <ProjectReference Include="..\lib2\Lib2.csproj" />
+    <ProjectReference Include="..\lib4\Lib4.csproj" />
+  </ItemGroup>
+
+  <!-- this should come after everything else -->
+  <PropertyGroup>
+    <IsDefaultMultiStartupProject>true</IsDefaultMultiStartupProject>
+  </PropertyGroup>
+
+</Project>

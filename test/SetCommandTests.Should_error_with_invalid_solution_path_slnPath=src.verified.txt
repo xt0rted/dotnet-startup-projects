@@ -1,0 +1,8 @@
+﻿{
+  IsErrorRedirected: false,
+  IsInputRedirected: false,
+  IsOutputRedirected: false,
+  Out:
+No solution found in '{SolutionDirectory}integration\src'
+
+}
