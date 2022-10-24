@@ -69,7 +69,7 @@ jobs:
       - run: dotnet r pack -- --version-suffix ${{ env.VERSION_SUFFIX }}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: nupkg
           path: ./artifacts/*.nupkg
