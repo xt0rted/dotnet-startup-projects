@@ -87,7 +87,7 @@ public sealed class SetCommandTests : TestBase, IDisposable
         // Then
         result.ShouldBe(0);
 
-        await Verify(await File.ReadAllBytesAsync(suoPath)).UseParameters(version, folder);
+        await Verify(File.ReadAllBytesAsync(suoPath), extension: "bin").UseParameters(version, folder);
     }
 
     public void Dispose()
