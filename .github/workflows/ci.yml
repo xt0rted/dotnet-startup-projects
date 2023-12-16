@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v4.1.1
 
       - name: Install Node
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v4.0.0
         with:
           node-version: 18
 
@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v4.1.1
 
       - name: Build version suffix (main)
         if: github.event_name == 'push'
@@ -69,7 +69,7 @@ jobs:
       - run: dotnet r pack -- --version-suffix ${{ env.VERSION_SUFFIX }}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.0.0
         with:
           name: nupkg
           path: ./artifacts/*.nupkg
@@ -88,7 +88,7 @@ jobs:
 
     steps:
       - name: Download nupkg
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.0.0
         with:
           name: nupkg
 
