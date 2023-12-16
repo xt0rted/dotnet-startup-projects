@@ -5,7 +5,13 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 99
+    groups:
+      github-actions:
+        patterns:
+          - "actions/*"
+      my-actions:
+        patterns:
+          - "xt0rted/*"
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -18,4 +24,24 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 99
+    groups:
+      analyzers:
+        patterns:
+          - "IDisposableAnalyzers"
+          - "Roslynator.*"
+      dotnet:
+        patterns:
+          - "Microsoft.Extensions.*"
+          - "Microsoft.SourceLink.GitHub"
+      system-commandline:
+        patterns:
+          - "System.CommandLine"
+          - "System.CommandLine.*"
+      testing:
+        patterns:
+          - "GitHubActionsTestLogger"
+          - "Microsoft.NET.Test.Sdk"
+          - "Shouldly"
+          - "Verify.Xunit"
+          - "xunit"
+          - "xunit.*"
