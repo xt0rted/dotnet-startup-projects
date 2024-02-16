@@ -1,0 +1,19 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib1\Lib5.csproj" />
+    <ProjectReference Include="..\lib2\Lib6.csproj" />
+    <ProjectReference Include="..\lib4\Lib8.csproj" />
+  </ItemGroup>
+
+  <!-- this should come after everything else -->
+  <PropertyGroup>
+    <IsDefaultMultiStartupProject>true</IsDefaultMultiStartupProject>
+  </PropertyGroup>
+
+</Project>
