@@ -144,6 +144,9 @@ internal abstract class CommandBase : Command, ICommandHandler
         {
             var fileContents = await XElement.LoadAsync(reader, LoadOptions.None, cancellationToken);
 
+            // To support full framework projects we need to ignore namespaces
+            fileContents = RemoveNamespaces(fileContents);
+
             foreach (var group in fileContents.Elements("PropertyGroup"))
             {
                 var isStartup = group.Element(Constants.ProjectPropertyName);
@@ -161,4 +164,16 @@ internal abstract class CommandBase : Command, ICommandHandler
     public record SolutionDetails(string File, List<ProjectDetails> Projects);
 
     public record ProjectDetails(string Guid, string Path);
+
+    // https://stackoverflow.com/a/7238007/39605
+    private static XElement RemoveNamespaces(XElement e)
+        => new XElement(
+            e.Name.LocalName,
+            e.Nodes().Select(n => n is XElement xn ? RemoveNamespaces(xn) : n),
+            e.HasAttributes
+                ? e.Attributes()
+                    .Where(a => !a.IsNamespaceDeclaration)
+                    .Select(a => new XAttribute(a.Name.LocalName, a.Value))
+                : null
+        );
 }
