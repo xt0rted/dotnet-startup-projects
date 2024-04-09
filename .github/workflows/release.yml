@@ -13,29 +13,14 @@ jobs:
     runs-on: windows-latest
 
     permissions:
-      contents: write
-      packages: write
+      contents: read
 
     steps:
-      - name: Get version from tag
-        id: tag_name
-        run: echo "current_version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-        shell: bash
-
       - name: Check out repository
         uses: actions/checkout@v4.1.2
 
       - name: Set up .NET
         uses: xt0rted/setup-dotnet@v1.5.0
-        with:
-          source-url: https://nuget.pkg.github.com/xt0rted/index.json
-          nuget_auth_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get changelog entry
-        uses: mindsers/changelog-reader-action@v2.2.3
-        id: changelog_reader
-        with:
-          version: ${{ steps.tag_name.outputs.current_version }}
 
       - run: dotnet tool restore
 
@@ -50,6 +35,36 @@ jobs:
         with:
           name: nupkg
           path: ./artifacts/*.nupkg
+
+  release:
+    needs:
+      - build
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Get version from tag
+        id: tag_name
+        run: echo "current_version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Check out repository
+        uses: actions/checkout@v4.1.2
+
+      - name: Download nupkg
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: nupkg
+          path: ./artifacts
+
+      - name: Get changelog entry
+        uses: mindsers/changelog-reader-action@v2.2.3
+        id: changelog_reader
+        with:
+          version: ${{ steps.tag_name.outputs.current_version }}
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
@@ -67,7 +82,6 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/releases/${{ steps.release_updater.outputs.id }} \
             -f discussion_category_name='Announcements'
-        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
@@ -76,11 +90,9 @@ jobs:
           dotnet nuget push "./artifacts/*.nupkg" \
             --api-key ${{ secrets.GITHUB_TOKEN }} \
             --source https://nuget.pkg.github.com/${{ github.repository_owner }}
-        shell: bash
 
       - name: Publish to nuget.org
         run: |
           dotnet nuget push "./artifacts/*.nupkg" \
             --api-key ${{ secrets.NUGET_TOKEN }} \
             --source https://api.nuget.org/v3/index.json
-        shell: bash
