@@ -139,7 +139,7 @@ internal abstract class CommandBase : Command, ICommandHandler
 
     private static async Task<bool> IsStartupProjectAsync(string path, CancellationToken cancellationToken)
     {
-        using (var file = File.OpenRead(path))
+        await using (var file = File.OpenRead(path))
         using (var reader = XmlReader.Create(file, new XmlReaderSettings { Async = true }))
         {
             var fileContents = await XElement.LoadAsync(reader, LoadOptions.None, cancellationToken);
