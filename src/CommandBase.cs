@@ -25,7 +25,7 @@ internal abstract class CommandBase : Command, ICommandHandler
 
     public async Task<int> InvokeAsync(InvocationContext context)
     {
-        if (context is null) throw new ArgumentNullException(nameof(context));
+        ArgumentNullException.ThrowIfNull(context);
 
         var writer = BuildConsoleWriter(context.Console);
 

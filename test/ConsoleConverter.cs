@@ -4,8 +4,8 @@ public class ConsoleConverter : WriteOnlyJsonConverter<IConsole>
 {
     public override void Write(VerifyJsonWriter writer, IConsole value)
     {
-        if (writer is null) throw new ArgumentNullException(nameof(writer));
-        if (value is null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(value);
 
         var errorOutput = value.Error.ToString();
         var output = value.Out.ToString();
