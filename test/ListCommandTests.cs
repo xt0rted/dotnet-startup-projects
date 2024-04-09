@@ -1,6 +1,5 @@
 namespace StartupProjects;
 
-[UsesVerify]
 public class ListCommandTests : TestBase
 {
     [Fact]

@@ -1,6 +1,5 @@
 namespace StartupProjects;
 
-[UsesVerify]
 public sealed class SetCommandTests : TestBase, IDisposable
 {
     private readonly string _vsFolderPath;

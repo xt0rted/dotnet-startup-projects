@@ -1,6 +1,5 @@
 namespace StartupProjects;
 
-[UsesVerify]
 public abstract class TestBase
 {
     protected readonly string _integrationPath;
