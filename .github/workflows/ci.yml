@@ -38,7 +38,6 @@ jobs:
 
     permissions:
       contents: read
-      packages: read
 
     steps:
       - name: Check out repository
@@ -56,9 +55,6 @@ jobs:
 
       - name: Set up .NET
         uses: xt0rted/setup-dotnet@v1.5.0
-        with:
-          source-url: https://nuget.pkg.github.com/xt0rted/index.json
-          nuget_auth_token: ${{ secrets.GITHUB_TOKEN }}
 
       - run: dotnet tool restore
 
