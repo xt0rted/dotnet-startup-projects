@@ -4,9 +4,11 @@
   IsOutputRedirected: false,
   Out:
 Checking for projects in {SolutionDirectory}integration\integration.sln
-  Found 2 projects
+  Found 4 projects
   src\lib1\Lib1.csproj
   src\lib3\Lib3.csproj
+  src\lib5\Lib5.csproj
+  src\lib7\Lib7.csproj
 
 Setting startup projects for:
   Visual Studio 2022
