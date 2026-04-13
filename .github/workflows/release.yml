@@ -67,7 +67,7 @@ jobs:
           version: ${{ steps.tag_name.outputs.current_version }}
 
       - name: Upload release assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         id: release_updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
